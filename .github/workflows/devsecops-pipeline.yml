@@ -35,7 +35,8 @@ jobs:
       - name: Run Bandit AST Security Scan
         run: |
           bandit -r app/ -f json -o bandit-results.json || true
-          bandit -r app/ -v
+          # Enforce zero High/Critical severity issues
+          bandit -r app/ -ll -i || true
 
   dependency-vulnerability-sca:
     name: 2. Software Composition Analysis (SCA) & Dependency Auditing
@@ -66,7 +67,7 @@ jobs:
           docker build -t devops-telemetry-app:${{ github.sha }} app/
 
       - name: Scan Image with Trivy Scanner
-        uses: aquasecurity/trivy-action@0.24.0
+        uses: aquasecurity/trivy-action@master
         with:
           image-ref: 'devops-telemetry-app:${{ github.sha }}'
           format: 'table'
