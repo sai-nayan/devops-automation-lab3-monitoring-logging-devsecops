@@ -1,0 +1,66 @@
+{
+  "metadata": {
+    "timestamp": "2026-11-02T15:59:59.673544+00:00",
+    "operator": "Sai Nayan Mamilla",
+    "host": "Sais-MacBook-Pro.local",
+    "lab": "Lab 3: Monitoring, Logging & DevSecOps"
+  },
+  "feature_flags": {
+    "ENABLE_BETA_UI": true,
+    "ENABLE_DISCOUNT_BANNER": true,
+    "ENABLE_FAST_CHECKOUT": false,
+    "MAINTENANCE_MODE": false,
+    "EXPERIMENT_VARIANT_RECOMMENDER": "v2_collaborative_filtering"
+  },
+  "load_testing": {
+    "total_requests": 1500,
+    "concurrency": 25,
+    "throughput_rps": 311.18,
+    "status_distribution": {
+      "200": 1399,
+      "500": 101
+    },
+    "latencies_ms": {
+      "mean": 23.74,
+      "p50": 19.08,
+      "p90": 45.39,
+      "p95": 54.99,
+      "p99": 86.69
+    }
+  },
+  "selenium_tests": [
+    {
+      "id": "TC_001",
+      "name": "Verify Base Application Loading & UI Structure",
+      "selector": "header h1",
+      "expected": "CloudTelemetry Microservice",
+      "status": "PASSED",
+      "execution_time_ms": 142
+    },
+    {
+      "id": "TC_002",
+      "name": "Verify Discount Banner under ENABLE_DISCOUNT_BANNER=True",
+      "selector": "#discount-banner",
+      "expected": "FLASH PROMO ACTIVATED: Use code DEVSECOPS2026",
+      "status": "PASSED",
+      "execution_time_ms": 86
+    },
+    {
+      "id": "TC_003",
+      "name": "Verify Beta UI Badge under ENABLE_BETA_UI=True",
+      "selector": "#beta-ui-badge",
+      "expected": "Beta UI v2.4",
+      "status": "PASSED",
+      "execution_time_ms": 74
+    },
+    {
+      "id": "TC_004",
+      "name": "Verify Dynamic Button Injection on Fast Checkout Toggle",
+      "selector": "#fast-checkout-btn",
+      "expected": "\u26a1 Instant 1-Click Checkout",
+      "status": "PASSED",
+      "execution_time_ms": 198
+    }
+  ],
+  "overall_status": "PASSED"
+}

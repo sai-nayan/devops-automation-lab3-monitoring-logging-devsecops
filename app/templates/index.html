@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevOps Observability Portal | Sai Nayan Mamilla</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-sub: #94a3b8;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --border: #334155;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+        .banner {
+            background: linear-gradient(90deg, #ec4899 0%, #8b5cf6 100%);
+            color: white;
+            text-align: center;
+            padding: 10px 16px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 24px;
+        }
+        header {
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 24px;
+            margin-bottom: 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .badge {
+            background-color: #0284c7;
+            color: white;
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            border-radius: 9999px;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+        .beta-badge {
+            background-color: #8b5cf6;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .card h2 {
+            margin-top: 0;
+            font-size: 1.25rem;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .flag-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .flag-item:last-child {
+            border-bottom: none;
+        }
+        .btn {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.2s;
+        }
+        .btn:hover {
+            background-color: var(--accent-hover);
+        }
+        .btn-fast-checkout {
+            background-color: var(--success);
+            font-weight: bold;
+            width: 100%;
+            padding: 12px;
+            text-align: center;
+            margin-top: 12px;
+        }
+        .btn-fast-checkout:hover {
+            background-color: #059669;
+        }
+        .pill-active {
+            color: #10b981;
+            background: rgba(16, 185, 129, 0.15);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .pill-inactive {
+            color: #ef4444;
+            background: rgba(239, 68, 68, 0.15);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .metrics-bar {
+            background: #111827;
+            border-radius: 8px;
+            padding: 16px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: #38bdf8;
+            margin-top: 16px;
+        }
+        footer {
+            margin-top: 60px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-sub);
+            border-top: 1px solid var(--border);
+            padding: 24px 0;
+        }
+    </style>
+</head>
+<body>
+    {% if flags.ENABLE_DISCOUNT_BANNER %}
+    <div id="discount-banner" class="banner">
+        🎉 FLASH PROMO ACTIVATED: Use code <strong>DEVSECOPS2026</strong> for 25% off infrastructure monitoring credits!
+    </div>
+    {% endif %}
+
+    <div class="container">
+        <header>
+            <div>
+                <h1>
+                    <span>CloudTelemetry Microservice</span>
+                    {% if flags.ENABLE_BETA_UI %}
+                    <span id="beta-ui-badge" class="badge beta-badge">Beta UI v2.4</span>
+                    {% else %}
+                    <span class="badge">Stable v1.0</span>
+                    {% endif %}
+                </h1>
+                <p style="color: var(--text-sub); margin: 6px 0 0 0;">
+                    Automated provisioning by Terraform &bull; Configured by Ansible &bull; Monitored via Prometheus
+                </p>
+            </div>
+            <div>
+                <a href="/metrics" class="btn" target="_blank">View /metrics</a>
+            </div>
+        </header>
+
+        <div class="grid">
+            <div class="card">
+                <h2><span>Dynamic Feature Flags</span> <span style="font-size: 0.8rem; color: var(--text-sub);">Runtime Engine</span></h2>
+                <div class="flag-item">
+                    <span>ENABLE_BETA_UI</span>
+                    {% if flags.ENABLE_BETA_UI %}
+                    <span class="pill-active">ENABLED</span>
+                    {% else %}
+                    <span class="pill-inactive">DISABLED</span>
+                    {% endif %}
+                </div>
+                <div class="flag-item">
+                    <span>ENABLE_DISCOUNT_BANNER</span>
+                    {% if flags.ENABLE_DISCOUNT_BANNER %}
+                    <span class="pill-active">ENABLED</span>
+                    {% else %}
+                    <span class="pill-inactive">DISABLED</span>
+                    {% endif %}
+                </div>
+                <div class="flag-item">
+                    <span>ENABLE_FAST_CHECKOUT</span>
+                    {% if flags.ENABLE_FAST_CHECKOUT %}
+                    <span class="pill-active">ENABLED</span>
+                    {% else %}
+                    <span class="pill-inactive">DISABLED</span>
+                    {% endif %}
+                </div>
+                <div class="flag-item">
+                    <span>MAINTENANCE_MODE</span>
+                    {% if flags.MAINTENANCE_MODE %}
+                    <span class="pill-active">ENABLED</span>
+                    {% else %}
+                    <span class="pill-inactive">DISABLED</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="card">
+                <h2><span>Interactive Testing Panel</span></h2>
+                <p style="color: var(--text-sub); font-size: 0.9rem;">
+                    Trigger application interactions to generate metrics and structured logs for Logstash & Prometheus.
+                </p>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <a href="/api/checkout?item=server_cluster" class="btn">Simulate 200 Order</a>
+                    <a href="/api/error" class="btn" style="background-color: var(--danger);">Trigger 500 Error</a>
+                    <a href="/api/flags" class="btn" style="background-color: #64748b;">Inspect Flags API</a>
+                </div>
+                {% if flags.ENABLE_FAST_CHECKOUT %}
+                <button id="fast-checkout-btn" class="btn btn-fast-checkout" onclick="alert('⚡ 1-Click Fast Checkout Completed successfully!')">
+                    ⚡ Instant 1-Click Checkout (Beta Feature)
+                </button>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="card">
+            <h2><span>Telemetry & Logging Status</span></h2>
+            <div class="metrics-bar">
+                <div>[SYSTEM] Host: Sais-MacBook-Pro.local | Student: Sai Nayan Mamilla</div>
+                <div>[LOGGING] Centralized Log Shipping &rarr; Logstash :5044 &rarr; Elasticsearch :9200</div>
+                <div>[MONITORING] Prometheus Scrape Endpoint &rarr; /metrics (Scrape Interval: 5s)</div>
+                <div>[PIPELINE] Security Scanning: Bandit SAST, pip-audit SCA, Trivy Container Gate: PASSED</div>
+            </div>
+        </div>
+
+        <footer>
+            Academic Coursework &bull; Lab 3: Monitoring, Logging &amp; DevSecOps &bull; Submitted by Sai Nayan Mamilla (sainayanmamilla)
+        </footer>
+    </div>
+</body>
+</html>

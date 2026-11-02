@@ -1,0 +1,29 @@
+groups:
+  - name: devops_service_alerts
+    rules:
+      - alert: ServiceDown
+        expr: up == 0
+        for: 30s
+        labels:
+          severity: critical
+        annotations:
+          summary: "Microservice instance {{ $labels.instance }} is unreachable"
+          description: "Target {{ $labels.instance }} of job {{ $labels.job }} has been unresponsive for 30s."
+
+      - alert: HighHttpErrorRate5xx
+        expr: sum(rate(http_requests_total{status=~"5.."}[1m])) / sum(rate(http_requests_total[1m])) * 100 > 5
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "High HTTP 5xx Server Error Ratio detected (> 5%)"
+          description: "Current error rate is {{ $value }}% on service {{ $labels.service }}."
+
+      - alert: HighRequestLatencyP99
+        expr: histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket[2m])) by (le)) > 0.5
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "P99 Request Latency exceeded 500ms"
+          description: "P99 response time on endpoint {{ $labels.endpoint }} is {{ $value }}s."

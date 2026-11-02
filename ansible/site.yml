@@ -1,0 +1,16 @@
+---
+# Master DevOps Orchestration Playbook
+# Course Assessment: Lab 3 - Monitoring, Logging & DevSecOps
+# Student: Sai Nayan Mamilla (sainayanmamilla)
+
+- name: "[PHASE 1] Centralized Logging Orchestration (ELK Stack)"
+  import_playbook: playbooks/01_elk_logging.yml
+
+- name: "[PHASE 2] DevSecOps CI/CD Security Scanning & Quality Gates"
+  import_playbook: playbooks/02_devsecops_pipeline.yml
+
+- name: "[PHASE 3] Prometheus & Grafana Observability Setup"
+  import_playbook: playbooks/03_prometheus_grafana.yml
+
+- name: "[PHASE 4] Feature Flags Verification & Multi-Faceted Testing"
+  import_playbook: playbooks/04_testing_feature_flags.yml

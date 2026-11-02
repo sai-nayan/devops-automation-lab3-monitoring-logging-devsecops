@@ -1,0 +1,7 @@
+{
+  "ENABLE_BETA_UI": true,
+  "ENABLE_DISCOUNT_BANNER": true,
+  "ENABLE_FAST_CHECKOUT": false,
+  "MAINTENANCE_MODE": false,
+  "EXPERIMENT_VARIANT_RECOMMENDER": "v2_collaborative_filtering"
+}

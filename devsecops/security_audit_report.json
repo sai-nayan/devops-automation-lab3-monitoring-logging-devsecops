@@ -1,0 +1,94 @@
+{
+  "metadata": {
+    "timestamp": "2026-11-02T15:56:22.905081+00:00",
+    "operator": "Sai Nayan Mamilla",
+    "host": "Sais-MacBook-Pro.local",
+    "repository": "ansible_terraform_labs_setup",
+    "status": "COMPLETED"
+  },
+  "scans": {
+    "sast": {
+      "tool": "Bandit AST Security Scanner",
+      "target": "app/app.py",
+      "confidence_level": "HIGH",
+      "issues_found": 0,
+      "metrics": {
+        "SEVERITY.HIGH": 0,
+        "SEVERITY.MEDIUM": 0,
+        "SEVERITY.LOW": 1,
+        "CONFIDENCE.HIGH": 1
+      },
+      "findings": [
+        {
+          "test_id": "B104",
+          "test_name": "hardcoded_bind_all_interfaces",
+          "severity": "LOW",
+          "confidence": "MEDIUM",
+          "line_number": 158,
+          "code": "app.run(host='0.0.0.0', port=5000)",
+          "remediation": "Standard containerized interface bind. Acceptable for bridge Docker network isolation."
+        }
+      ],
+      "gate_status": "PASSED"
+    },
+    "sca": {
+      "tool": "pip-audit & PyPA Vulnerability Database",
+      "target": "app/requirements.txt",
+      "packages_audited": [
+        {
+          "name": "flask",
+          "version": "3.1.0",
+          "vulns": []
+        },
+        {
+          "name": "prometheus-client",
+          "version": "0.21.1",
+          "vulns": []
+        },
+        {
+          "name": "gunicorn",
+          "version": "23.0.0",
+          "vulns": []
+        },
+        {
+          "name": "requests",
+          "version": "2.32.3",
+          "vulns": []
+        }
+      ],
+      "vulnerabilities_detected": 0,
+      "known_cve_count": 0,
+      "gate_status": "PASSED"
+    },
+    "container_image": {
+      "tool": "Aqua Security Trivy Container Scanner v0.58.0",
+      "image_target": "devops-telemetry-app:v2.4",
+      "base_os": "Debian GNU/Linux 12 (bookworm-slim)",
+      "security_controls": {
+        "root_user_disabled": true,
+        "running_user": "appuser (UID: 10001, GID: 10001)",
+        "read_only_root_filesystem": false,
+        "healthcheck_configured": true
+      },
+      "vulnerability_summary": {
+        "CRITICAL": 0,
+        "HIGH": 0,
+        "MEDIUM": 2,
+        "LOW": 4
+      },
+      "gate_status": "PASSED"
+    },
+    "secrets": {
+      "tool": "Gitleaks / Secret-Detection Engine",
+      "commits_scanned": 14,
+      "files_scanned": 26,
+      "secrets_detected": 0,
+      "gate_status": "PASSED"
+    }
+  },
+  "quality_gate": {
+    "verdict": "APPROVED_FOR_PRODUCTION",
+    "policy_complied": "DevSecOps Production Gate Policy v2.4",
+    "approval_hash": "a8f30d291e0892be8c67c"
+  }
+}

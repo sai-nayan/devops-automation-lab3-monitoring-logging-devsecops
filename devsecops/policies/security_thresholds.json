@@ -1,0 +1,28 @@
+{
+  "policy_name": "DevSecOps Production Gate Policy v2.4",
+  "organization": "Academic Laboratory CI/CD Gates",
+  "evaluator": "Sai Nayan Mamilla",
+  "rules": {
+    "sast_findings": {
+      "severity_high_max_allowed": 0,
+      "severity_medium_max_allowed": 2,
+      "severity_low_max_allowed": 10
+    },
+    "sca_vulnerabilities": {
+      "cvss_score_critical_threshold": 9.0,
+      "critical_cve_max_allowed": 0,
+      "high_cve_max_allowed": 0,
+      "require_fix_available": true
+    },
+    "container_security": {
+      "non_root_user_required": true,
+      "unprivileged_ports_only": true,
+      "read_only_root_filesystem": false,
+      "max_high_cves_base_image": 0
+    },
+    "secrets_policy": {
+      "plaintext_api_keys_allowed": 0,
+      "private_keys_allowed": 0
+    }
+  }
+}

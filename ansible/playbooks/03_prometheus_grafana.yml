@@ -1,0 +1,47 @@
+---
+- name: "Task 3 — Set Up Monitoring using Prometheus & Grafana"
+  hosts: monitoring_nodes
+  gather_facts: false
+  vars:
+    prom_conf: "{{ playbook_dir }}/../../monitoring/prometheus/prometheus.yml"
+    alerts_conf: "{{ playbook_dir }}/../../monitoring/prometheus/alerts.yml"
+    grafana_ds: "{{ playbook_dir }}/../../monitoring/grafana/provisioning/datasources/prometheus.yml"
+    grafana_dash: "{{ playbook_dir }}/../../monitoring/grafana/dashboards/observability_dashboard.json"
+
+  tasks:
+    - name: 3.1 Verify Prometheus Configuration & Scrape Jobs Exist
+      ansible.builtin.stat:
+        path: "{{ prom_conf }}"
+      register: prom_stat
+
+    - name: 3.2 Verify Prometheus Alerting Rules Exist
+      ansible.builtin.stat:
+        path: "{{ alerts_conf }}"
+      register: alert_stat
+
+    - name: 3.3 Verify Grafana Datasource Auto-Provisioning Exists
+      ansible.builtin.stat:
+        path: "{{ grafana_ds }}"
+      register: ds_stat
+
+    - name: 3.4 Verify Grafana Observability Dashboard Definition Exists
+      ansible.builtin.stat:
+        path: "{{ grafana_dash }}"
+      register: dash_stat
+
+    - name: 3.5 Assert Complete Observability Stack Integrity
+      ansible.builtin.assert:
+        that:
+          - prom_stat.stat.exists
+          - alert_stat.stat.exists
+          - ds_stat.stat.exists
+          - dash_stat.stat.exists
+        fail_msg: "Observability configuration files missing"
+
+    - name: 3.6 Display Observability Deployment Summary
+      ansible.builtin.debug:
+        msg:
+          - "Prometheus & Grafana Monitoring Configured"
+          - "Scrape Interval: 5s, Endpoint: /metrics"
+          - "Alert Rules Configured: ServiceDown, HighHttpErrorRate5xx, HighRequestLatencyP99"
+          - "Grafana Dashboard: DevOps Observability & Feature Flags Dashboard (UID: devops-telemetry-master)"

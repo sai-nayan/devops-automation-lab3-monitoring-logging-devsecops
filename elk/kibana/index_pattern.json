@@ -1,0 +1,7 @@
+{
+  "attributes": {
+    "title": "devops-telemetry-logs-*",
+    "timeFieldName": "@timestamp",
+    "fields": "[{\"name\":\"@timestamp\",\"type\":\"date\",\"searchable\":true,\"aggregatable\":true},{\"name\":\"status_code\",\"type\":\"number\",\"searchable\":true,\"aggregatable\":true},{\"name\":\"http_method\",\"type\":\"string\",\"searchable\":true,\"aggregatable\":true},{\"name\":\"request_path\",\"type\":\"string\",\"searchable\":true,\"aggregatable\":true},{\"name\":\"client_ip\",\"type\":\"ip\",\"searchable\":true,\"aggregatable\":true},{\"name\":\"latency_ms\",\"type\":\"number\",\"searchable\":true,\"aggregatable\":true},{\"name\":\"http_category\",\"type\":\"string\",\"searchable\":true,\"aggregatable\":true}]"
+  }
+}

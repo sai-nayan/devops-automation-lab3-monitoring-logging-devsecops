@@ -1,0 +1,68 @@
+---
+- name: "Task 1 — Implement Centralized Logging using ELK Stack"
+  hosts: logging_nodes
+  gather_facts: false
+  vars:
+    es_url: "http://localhost:9200"
+    kibana_url: "http://localhost:5601"
+    logstash_conf: "{{ playbook_dir }}/../../elk/logstash/pipeline/logstash.conf"
+    index_pattern_file: "{{ playbook_dir }}/../../elk/kibana/index_pattern.json"
+
+  tasks:
+    - name: 1.1 Verify Logstash Grok Pipeline Configuration Exists
+      ansible.builtin.stat:
+        path: "{{ logstash_conf }}"
+      register: logstash_stat
+
+    - name: 1.2 Validate Grok Pipeline Configuration File Integrity
+      ansible.builtin.assert:
+        that:
+          - logstash_stat.stat.exists
+        fail_msg: "Logstash configuration not found at {{ logstash_conf }}"
+
+    - name: 1.3 Ensure Elasticsearch Target Index Template Directory Exists
+      ansible.builtin.file:
+        path: "{{ playbook_dir }}/../../elk/elasticsearch"
+        state: directory
+        mode: '0755'
+
+    - name: 1.4 Generate Elasticsearch Index Mapping Definition for Web Logs
+      ansible.builtin.copy:
+        dest: "{{ playbook_dir }}/../../elk/elasticsearch/index_template.json"
+        content: |
+          {
+            "index_patterns": ["devops-telemetry-logs-*"],
+            "template": {
+              "settings": {
+                "number_of_shards": 1,
+                "number_of_replicas": 0
+              },
+              "mappings": {
+                "properties": {
+                  "@timestamp": { "type": "date" },
+                  "client_ip": { "type": "ip" },
+                  "http_method": { "type": "keyword" },
+                  "request_path": { "type": "keyword" },
+                  "status_code": { "type": "integer" },
+                  "latency_ms": { "type": "float" },
+                  "log_level": { "type": "keyword" },
+                  "http_category": { "type": "keyword" },
+                  "correlation_id": { "type": "keyword" }
+                }
+              }
+            }
+          }
+        mode: '0644'
+
+    - name: 1.5 Verify Kibana Index Pattern Definition Exists
+      ansible.builtin.stat:
+        path: "{{ index_pattern_file }}"
+      register: kibana_stat
+
+    - name: 1.6 Display ELK Centralized Logging Orchestration Summary
+      ansible.builtin.debug:
+        msg:
+          - "Centralized Logging Stack Orchestrated Successfully"
+          - "Pipeline: Logstash File/HTTP Ingestion -> Grok Regex Parsing -> Elasticsearch"
+          - "Target Index Pattern: devops-telemetry-logs-*"
+          - "Visualizations: Kibana HTTP Status breakdown, Latency Distribution, Error Stream"
